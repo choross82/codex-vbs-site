@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>여름사역을 위한 OpenAI Codex</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FBF5ED; --bg-warm:#F2E8DC; --surface:#FFFFFF;
+  --ink:#1B2A3E; --ink-soft:#4A5A6E; --ink-mute:#8B95A3;
+  --line:#E0D4C2; --line-soft:#EDE4D5;
+  --coral:#E8745B; --coral-soft:#FBE2DA; --coral-deep:#C45A45;
+  --midnight:#1B2A3E; --cloud:#E8D4C0; --mist:#F0E6DA;
+  --sky-soft:#DDE5ED; --sky:#5C7B9D;
+  --code-bg:#1B2A3E; --code-ink:#F2E8DC; --code-accent:#E8B870;
+  --instrument:'Instrument Serif','Pretendard',serif;
+  --sans:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono','D2Coding',monospace;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;font-size:17px;font-weight:400;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden}
+.container{max-width:1080px;margin:0 auto;padding:0 32px;position:relative}
+.italic{font-family:var(--instrument);font-style:italic;font-weight:400;color:var(--coral)}
+.mark{background:linear-gradient(180deg,transparent 60%,var(--coral-soft) 60%);padding:0 2px}
+.mark-cloud{background:linear-gradient(180deg,transparent 60%,var(--cloud) 60%);padding:0 2px}
+.section-tag{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:28px;font-weight:500}
+.section-tag::before{content:'';display:inline-block;width:36px;height:1px;background:var(--coral)}
+
+/* HERO */
+.hero{padding:88px 0 104px;position:relative}
+.hero::after{content:'';position:absolute;left:32px;right:32px;bottom:0;height:1px;background:var(--line)}
+.hero-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:72px;flex-wrap:wrap;gap:16px}
+.brand-mark{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px;color:var(--ink)}
+.brand-mark .nara{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.episode-meta{display:flex;gap:14px;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--ink-mute);text-transform:uppercase}
+.date-badge{padding:5px 12px;background:var(--midnight);color:var(--bg);border-radius:100px;font-weight:500}
+.hero-eyebrow{font-family:var(--instrument);font-style:italic;font-size:22px;color:var(--coral);margin-bottom:28px;line-height:1.4}
+.hero-title{font-size:clamp(48px,7.5vw,92px);line-height:1.04;letter-spacing:-0.035em;font-weight:700;margin-bottom:40px;color:var(--ink)}
+.hero-title em{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.hero-deck{font-size:21px;line-height:1.7;color:var(--ink-soft);max-width:760px;margin-bottom:56px}
+.hero-deck strong{font-weight:600;color:var(--ink)}
+.hero-stats{display:flex;gap:64px;flex-wrap:wrap;padding-top:36px;border-top:1px dashed var(--line)}
+.stat{display:flex;flex-direction:column;gap:6px}
+.stat-num{font-family:var(--instrument);font-style:italic;font-size:48px;font-weight:400;color:var(--coral);line-height:1}
+.stat-label{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;color:var(--ink-mute);text-transform:uppercase}
+
+/* SECTIONS */
+section{padding:104px 0;position:relative}
+.section-bg-warm{background:var(--bg-warm)}
+.section-head{margin-bottom:64px;max-width:820px}
+.section-title{font-size:clamp(34px,4.8vw,56px);line-height:1.14;letter-spacing:-0.025em;font-weight:700;margin-bottom:24px;color:var(--ink)}
+.section-title em{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.section-deck{font-size:19px;line-height:1.7;color:var(--ink-soft)}
+.section-deck strong{font-weight:600;color:var(--ink)}
+
+/* INTRO VIZ */
+.intro-viz{background:var(--surface);border-radius:20px;padding:48px 32px;margin:48px 0 32px;border:1px solid var(--line-soft)}
+.intro-viz svg{width:100%;height:auto;max-width:920px;margin:0 auto;display:block}
+.viz-caption{text-align:center;font-family:var(--instrument);font-style:italic;font-size:17px;color:var(--ink-mute);margin-top:24px}
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px}
+.compare-card{padding:40px 36px;border-radius:20px;background:var(--surface);border:1px solid var(--line-soft)}
+.compare-card.after{background:var(--midnight);color:var(--bg);border-color:var(--midnight)}
+.compare-label{font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:18px;opacity:0.6;font-weight:500}
+.compare-title{font-size:26px;font-weight:600;letter-spacing:-0.02em;margin-bottom:24px;line-height:1.35}
+.after .compare-title em{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.compare-list{list-style:none}
+.compare-list li{padding:14px 0;display:flex;gap:14px;font-size:16px;line-height:1.55;border-bottom:1px solid var(--line-soft)}
+.after .compare-list li{border-bottom-color:rgba(255,255,255,0.08)}
+.compare-list li:last-child{border-bottom:none}
+.compare-list li::before{content:attr(data-icon);flex-shrink:0;width:20px;font-weight:700;font-family:var(--mono);font-size:14px}
+.before .compare-list li::before{color:var(--ink-mute)}
+.after .compare-list li::before{color:var(--coral)}
+
+/* CHAPTER BLOCK — 풀너비 */
+.chapter{background:var(--surface);border-radius:24px;padding:64px 56px;margin-bottom:24px;border:1px solid var(--line-soft);position:relative}
+.chapter:nth-child(even){background:var(--mist)}
+.chapter-meta{display:flex;align-items:center;gap:14px;font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:20px;font-weight:500}
+.chapter-meta::before{content:'';width:36px;height:1px;background:var(--coral)}
+.chapter-tags{display:flex;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.chapter-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;padding:5px 11px;border-radius:100px;background:var(--coral-soft);color:var(--coral-deep);font-weight:600}
+.chapter-tag.cloud{background:var(--cloud);color:var(--ink)}
+.chapter-tag.sky{background:var(--sky-soft);color:var(--sky)}
+.chapter-tag.warn{background:#FDF0D9;color:#B68216}
+.chapter-head{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;margin-bottom:32px}
+.chapter-num{font-family:var(--instrument);font-style:italic;font-size:140px;line-height:0.82;color:var(--coral);font-weight:400}
+.chapter-title-wrap{padding-top:16px}
+.chapter-title{font-size:38px;font-weight:700;letter-spacing:-0.025em;line-height:1.15;color:var(--ink);margin-bottom:14px}
+.chapter-title em{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.chapter-tagline{font-family:var(--instrument);font-style:italic;font-size:21px;color:var(--ink-mute);line-height:1.45}
+.chapter-body{font-size:17.5px;line-height:1.85;color:var(--ink-soft);max-width:880px;margin-bottom:36px}
+.chapter-body strong{color:var(--ink);font-weight:600}
+.chapter-viz{background:var(--surface);border-radius:16px;padding:32px 20px;margin:32px 0;border:1px solid var(--line-soft)}
+.chapter:nth-child(even) .chapter-viz{background:#FFFFFF}
+.chapter-viz svg{width:100%;height:auto;display:block}
+.chapter-prompts{margin-top:24px;background:var(--bg-warm);padding:32px 24px;border-radius:16px;border:1px solid var(--line-soft)}
+.prompts-label{font-family:var(--mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--coral);font-weight:600;margin-bottom:16px}
+
+/* PROMPT CARD */
+.prompt-card{background:var(--code-bg);border-radius:14px;margin:14px 0;overflow:hidden}
+.prompt-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid rgba(245,239,227,0.08)}
+.prompt-label{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px;color:var(--code-ink)}
+.prompt-num{background:var(--coral);color:white;padding:3px 10px;border-radius:100px;font-weight:600;font-size:10px}
+.prompt-tag{color:rgba(242,232,220,0.5);font-size:11px}
+.copy-btn{display:flex;align-items:center;gap:7px;background:transparent;border:1px solid rgba(245,239,227,0.18);color:rgba(245,239,227,0.65);font-family:var(--mono);font-size:10px;letter-spacing:0.1em;padding:6px 12px;border-radius:100px;cursor:pointer;transition:all 0.2s;font-weight:500}
+.copy-btn:hover{background:rgba(232,116,91,0.12);border-color:var(--coral);color:var(--coral)}
+.copy-btn.copied{background:var(--coral);border-color:var(--coral);color:white}
+.copy-btn svg{width:12px;height:12px;stroke-width:2.2}
+.prompt-body{padding:22px 24px;font-family:var(--mono);font-size:14px;line-height:1.75;color:var(--code-ink);white-space:pre-wrap;word-break:keep-all}
+
+/* LIMITS */
+.limits-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.limit-card{background:var(--surface);padding:32px 28px;border-radius:16px;border:1px solid var(--line-soft);position:relative;overflow:hidden}
+.limit-card::before{content:'';position:absolute;top:0;left:0;width:60px;height:4px;background:var(--coral);border-radius:0 0 100px 0}
+.limit-num{font-family:var(--mono);font-size:11px;color:var(--coral);font-weight:600;margin-bottom:14px;letter-spacing:0.12em}
+.limit-title{font-size:19px;font-weight:600;letter-spacing:-0.015em;margin-bottom:12px;line-height:1.35}
+.limit-desc{font-size:14.5px;line-height:1.65;color:var(--ink-soft)}
+
+/* MESSAGES */
+.message-stack{display:flex;flex-direction:column;gap:0;margin-top:48px;background:var(--surface);border-radius:20px;padding:8px 32px;border:1px solid var(--line-soft)}
+.message-row{display:grid;grid-template-columns:100px 1fr;gap:36px;padding:36px 0;border-bottom:1px dashed var(--line);align-items:baseline}
+.message-row:last-child{border-bottom:none}
+.message-num{font-family:var(--instrument);font-style:italic;font-size:60px;font-weight:400;color:var(--coral);line-height:1}
+.message-text{font-family:var(--instrument);font-style:italic;font-size:30px;line-height:1.45;font-weight:400;letter-spacing:-0.015em;color:var(--ink)}
+.message-text strong{font-family:var(--sans);font-style:normal;color:var(--coral);font-weight:600}
+
+/* FOOTER */
+.site-footer{background:var(--midnight);color:var(--bg);padding:104px 0 64px;margin-top:64px;position:relative;overflow:hidden}
+.site-footer::before{content:'';position:absolute;top:60px;right:-80px;width:240px;height:240px;border-radius:50%;background:var(--coral);opacity:0.18}
+.site-footer::after{content:'';position:absolute;top:120px;right:80px;width:80px;height:80px;border-radius:18px;background:var(--coral);opacity:0.3}
+.footer-mark{font-size:clamp(56px,8vw,96px);font-weight:700;letter-spacing:-0.04em;line-height:1;margin-bottom:40px;position:relative}
+.footer-mark em{font-family:var(--instrument);font-style:italic;color:var(--coral);font-weight:400}
+.footer-tagline{font-family:var(--instrument);font-style:italic;font-size:26px;color:var(--coral);margin-bottom:72px;max-width:620px;line-height:1.45;position:relative}
+.footer-meta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(242,232,220,0.4);padding-top:36px;border-top:1px solid rgba(242,232,220,0.1);flex-wrap:wrap;gap:16px;position:relative}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.85s ease,transform 0.85s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@media (max-width:820px){
+  body{font-size:16px}
+  section{padding:64px 0}
+  .hero{padding:56px 0 80px}
+  .container{padding:0 24px}
+  .hero-stats{gap:32px}
+  .stat-num{font-size:36px}
+  .intro-grid{grid-template-columns:1fr}
+  .chapter{padding:40px 28px}
+  .chapter-head{grid-template-columns:1fr;gap:16px}
+  .chapter-num{font-size:96px}
+  .chapter-title{font-size:28px}
+  .limits-grid{grid-template-columns:1fr}
+  .message-row{grid-template-columns:1fr;gap:12px;padding:28px 0}
+  .message-num{font-size:44px}
+  .message-text{font-size:22px}
+  .footer-meta{flex-direction:column}
+  .intro-viz,.chapter-viz{padding:20px 12px}
+}
+</style>
+</head>
+<body>
+<section class="hero">
+<div class="container">
+<div class="hero-head reveal visible">
+<div class="brand-mark">여름<span class="nara">사역</span> Codex</div>
+<div class="episode-meta">
+<span>LECTURE · CODEX</span>
+<span class="date-badge">2026.05</span>
+</div>
+</div>
+<div class="reveal visible">
+<div class="hero-eyebrow">이제 AI는 답변자가 아니라, <em class="italic">사역 동료</em>가 됩니다</div>
+<h1 class="hero-title">여름사역을 위한<br/>OpenAI <em>Codex</em></h1>
+<p class="hero-deck">
+        코드 작성 도구라는 오해는 잠시 접어두세요.<br/>
+        2026년의 코덱스는 <span class="mark">여름성경학교 준비팀 옆에서 함께 일하는 작은 사역팀</span>입니다.<br/>
+        여름성경학교 파일을 정리하고, 교사 자료를 만들고, 등록 데이터를 분석하고,
+        <span class="mark-cloud">가정통신문과 후속 심방 브리핑까지</span> 준비합니다.
+      </p>
+</div>
+<div class="hero-stats reveal visible">
+<div class="stat"><div class="stat-num">7</div><div class="stat-label">강의 챕터</div></div>
+<div class="stat"><div class="stat-num">9</div><div class="stat-label">시각 다이어그램</div></div>
+<div class="stat"><div class="stat-num">90+</div><div class="stat-label">플러그인 생태계</div></div>
+<div class="stat"><div class="stat-num">5.5</div><div class="stat-label">Codex v.GPT-5.5</div></div>
+</div>
+</div>
+
+</section>
+<section>
+<div class="container">
+<div class="section-head reveal visible">
+<div class="section-tag">INTRO · 코덱스란 무엇인가</div>
+<h2 class="section-title">코딩 도구라는<br/><em>오해 </em>를 목회 현장에서 풀어봅니다</h2>
+<p class="section-deck">
+        코덱스는 2025년 4월 코딩 에이전트로 출시됐습니다.<br/>
+        그런데 2026년 4월 <strong>GPT-5.5 기반 업데이트</strong> 이후,<br/>코드를 작성하는 도구가
+        아니라 코드를 활용해 결과물을 만들어주는<br/>데스크톱 워크스페이스로 다시 태어났습니다.<br/>
+        목회자, 교수, 교직원, 사역자를 위한 진짜 출발선은 거기서부터입니다.
+      </p>
+</div>
+<div class="intro-viz reveal visible">
+<svg viewbox="0 0 920 320" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arr1" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10">
+<path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path>
+</marker>
+</defs>
+<g>
+<rect fill="#FBF5ED" height="80" rx="14" stroke="#E0D4C2" stroke-width="1.5" width="170" x="20" y="120"></rect>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="13" font-weight="600" text-anchor="middle" x="105" y="148">사용자 (나)</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" text-anchor="middle" x="105" y="170">자연어 한 줄로</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" text-anchor="middle" x="105" y="186">"PPT 만들어줘"</text>
+</g>
+<path d="M 195 160 L 250 160" marker-end="url(#arr1)" stroke="#E8745B" stroke-width="2"></path>
+<g>
+<rect fill="#1B2A3E" height="240" rx="20" width="320" x="260" y="40"></rect>
+<text fill="#E8745B" font-family="Instrument Serif,serif" font-size="22" font-style="italic" text-anchor="middle" x="420" y="78">Codex 워크스페이스</text>
+<rect fill="#2D3D52" height="50" rx="10" stroke="#E8745B" stroke-width="0.5" width="130" x="280" y="100"></rect>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="345" y="122">파일 시스템</text>
+<text fill="#C9D1D9" font-family="Pretendard,sans-serif" font-size="10" text-anchor="middle" x="345" y="138">로컬 폴더 접근</text>
+<rect fill="#2D3D52" height="50" rx="10" stroke="#E8745B" stroke-width="0.5" width="130" x="430" y="100"></rect>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="495" y="122">코드 실행</text>
+<text fill="#C9D1D9" font-family="Pretendard,sans-serif" font-size="10" text-anchor="middle" x="495" y="138">Python · JS · Bash</text>
+<rect fill="#2D3D52" height="50" rx="10" stroke="#E8745B" stroke-width="0.5" width="130" x="280" y="170"></rect>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="345" y="192">컴퓨터 제어</text>
+<text fill="#C9D1D9" font-family="Pretendard,sans-serif" font-size="10" text-anchor="middle" x="345" y="208">자체 커서로 클릭</text>
+<rect fill="#2D3D52" height="50" rx="10" stroke="#E8745B" stroke-width="0.5" width="130" x="430" y="170"></rect>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="11" font-weight="600" text-anchor="middle" x="495" y="192">웹 + 플러그인</text>
+<text fill="#C9D1D9" font-family="Pretendard,sans-serif" font-size="10" text-anchor="middle" x="495" y="208">캔바 · Gmail · 90+</text>
+<text fill="rgba(232,184,112,0.7)" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" text-anchor="middle" x="420" y="252">POWERED BY GPT-5.5</text>
+</g>
+<path d="M 585 160 L 640 160" marker-end="url(#arr1)" stroke="#E8745B" stroke-width="2"></path>
+<g>
+<rect fill="#FFFFFF" height="64" rx="12" stroke="#E0D4C2" stroke-width="1" width="250" x="650" y="30"></rect>
+<text font-family="Pretendard,sans-serif" font-size="20" text-anchor="start" x="668" y="55">📄</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" x="700" y="55">문서 · 스프레드시트</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" x="700" y="76">.docx · .xlsx · .pptx</text>
+<rect fill="#FFFFFF" height="64" rx="12" stroke="#E0D4C2" stroke-width="1" width="250" x="650" y="106"></rect>
+<text font-family="Pretendard,sans-serif" font-size="20" text-anchor="start" x="668" y="131">🎨</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" x="700" y="131">이미지 · 디자인</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" x="700" y="152">안내 이미지 · 카드뉴스</text>
+<rect fill="#FFFFFF" height="64" rx="12" stroke="#E0D4C2" stroke-width="1" width="250" x="650" y="182"></rect>
+<text font-family="Pretendard,sans-serif" font-size="20" text-anchor="start" x="668" y="207">📊</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" x="700" y="207">분석 + 시각화</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" x="700" y="228">차트 · 인포그래픽</text>
+<rect fill="#FFFFFF" height="64" rx="12" stroke="#E0D4C2" stroke-width="1" width="250" x="650" y="258"></rect>
+<text font-family="Pretendard,sans-serif" font-size="20" text-anchor="start" x="668" y="283">⚙️</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" x="700" y="283">자동화 작업</text>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="12" x="700" y="304">정기 실행 · 백그라운드</text>
+</g>
+</svg>
+<div class="viz-caption">자연어 한 줄 → 코덱스 워크스페이스의 4가지 능력 → 다양한 형태의 결과물</div>
+</div>
+<div class="intro-grid reveal visible">
+<div class="compare-card before">
+<div class="compare-label">예전 · 2025년 출시 직후</div>
+<h3 class="compare-title">개발자용 코딩 보조 도구</h3>
+<ul class="compare-list">
+<li data-icon="—">터미널 화면, 코드 위주의 응답</li>
+<li data-icon="—">파일 시스템 접근 제한적</li>
+<li data-icon="—">한 번에 하나의 작업만</li>
+<li data-icon="—">결과는 코드, 사용자도 개발자만</li>
+</ul>
+</div>
+<div class="compare-card after">
+<div class="compare-label">지금 · 2026.04 이후 (GPT-5.5)</div>
+<h3 class="compare-title">데스크톱 전체를 다루는 <em>AI 팀</em></h3>
+<ul class="compare-list">
+<li data-icon="✓">자체 커서로 컴퓨터를 직접 조작</li>
+<li data-icon="✓">엑셀·워드·PPT·이미지 네이티브 생성</li>
+<li data-icon="✓">여러 에이전트가 동시 병렬 작업</li>
+<li data-icon="✓">정해진 시간에 자동으로 실행</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="section-bg-warm">
+<div class="container">
+<div class="section-head reveal visible">
+<div class="section-tag">CHAPTER 01-07 · 강의 본문</div>
+<h2 class="section-title">코덱스를 <em>처음 여는</em>, 7개의 챕터</h2>
+<p class="section-deck">
+        참석자가 막히지 않고 따라올 수 있는 순서로 짜여 있습니다.<br/>
+        진입 장벽을 깨는 셋업부터 시작해 기본 파일·폴더 정리, 기획안 작성, 홍보물 제작까지.<br/>
+        앞부분 핵심 흐름만 남겼습니다.</p>
+</div>
+<!-- CHAPTER 01 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 01 · 개념 정립</div>
+<div class="chapter-tags">
+<span class="chapter-tag cloud">기초 개념</span>
+<span class="chapter-tag">2026.04 업데이트</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">01</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">코덱스란 <em>무엇인가</em></h3>
+<p class="chapter-tagline">코딩 도구라는 오해를 풀어야 진짜 출발이 보인다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        2025년 4월 코딩 에이전트로 출시됐습니다.<br/>
+        2026년 4월 <strong>GPT-5.5 기반의 대규모 업데이트</strong>로 다시 태어났습니다.<br/>
+        이제는 코드를 짜주는 도구가 아니라, 코드를 활용해 결과물을 만들어주는 <strong>데스크톱 워크스페이스</strong>입니다.<br/>
+        AI 채팅이 끝나고 AI 에이전트의 시대로 넘어가는 분기점이고, 사역자에게는 진짜 출발선입니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+<!-- 좌측: AI 채팅 (이전 시대) -->
+<g>
+<rect fill="#FBF5ED" height="180" rx="14" stroke="#E0D4C2" stroke-width="1.5" width="300" x="20" y="30"></rect>
+<text fill="#8B95A3" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" x="36" y="58">AI 채팅 시대</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="16" font-weight="600" x="36" y="86">내가 묻고, AI가 답한다</text>
+<rect fill="#E8D4C0" height="22" rx="11" width="200" x="36" y="106"></rect>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="11" x="46" y="121">"엑셀 매크로 알려줘"</text>
+<rect fill="#FFFFFF" height="22" rx="11" stroke="#E0D4C2" width="220" x="84" y="138"></rect>
+<text fill="#4A5A6E" font-family="Pretendard,sans-serif" font-size="11" x="94" y="153">"여기 코드입니다..."</text>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="14" font-style="italic" text-anchor="middle" x="170" y="186">결과를 받고 사용자가 직접 실행</text>
+</g>
+<!-- 화살표 -->
+<text fill="#E8745B" font-family="Instrument Serif,serif" font-size="22" font-style="italic" text-anchor="middle" x="360" y="125">→</text>
+<!-- 우측: AI 에이전트 (현재) -->
+<g>
+<rect fill="#1B2A3E" height="180" rx="14" width="300" x="400" y="30"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" x="416" y="58">AI 에이전트 시대 · 코덱스</text>
+<text fill="#F2E8DC" font-family="Pretendard,sans-serif" font-size="16" font-weight="600" x="416" y="86">내가 시키면, AI가 해낸다</text>
+<rect fill="#2D3D52" height="22" rx="11" width="240" x="416" y="106"></rect>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="11" x="426" y="121">"출석·헌금 자료를 보고서로"</text>
+<g transform="translate(416,140)">
+<rect fill="#E8745B" height="32" rx="6" width="64"></rect>
+<text fill="white" font-family="Pretendard,sans-serif" font-size="10" font-weight="600" text-anchor="middle" x="32" y="20">✓ 분석</text>
+<rect fill="#E8B870" height="32" rx="6" width="64" x="72"></rect>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="10" font-weight="600" text-anchor="middle" x="104" y="20">✓ 시각화</text>
+<rect fill="#9CBA6E" height="32" rx="6" width="64" x="144"></rect>
+<text fill="white" font-family="Pretendard,sans-serif" font-size="10" font-weight="600" text-anchor="middle" x="176" y="20">✓ 저장</text>
+</g>
+<text fill="#E8745B" font-family="Instrument Serif,serif" font-size="14" font-style="italic" text-anchor="middle" x="550" y="195">실행까지 코덱스가 끝낸다</text></g></svg></div><div class="chapter-prompts">
+<div class="prompts-label" style="color:var(--ink-mute)">❌ 일반 챗GPT에서 물어볼 만한 — 정보를 묻기</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num" style="background:var(--ink-mute)">A</span>
+<span class="prompt-tag">// 교회 출석 집계 함수</span>
+</div>
+<button class="copy-btn" data-text="엑셀에서 COUNTIFS 함수로 교회학교 학년별 출석을 집계하는 법을 알려줘.
+예시 데이터로 같이 설명해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">엑셀에서 COUNTIFS 함수로 교회학교 학년별 출석을 집계하는 법을 알려줘.
+예시 데이터로 같이 설명해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num" style="background:var(--ink-mute)">B</span>
+<span class="prompt-tag">// 교회 행사 안내 이미지 팁</span>
+</div>
+<button class="copy-btn" data-text="교회학교 수련회 안내 이미지가 잘 읽히게 만드는 디자인 팁 5가지를 알려줘.
+색감·구도·타이포·안내 정보 우선순위 측면에서.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">교회학교 수련회 안내 이미지가 잘 읽히게 만드는 디자인 팁 5가지를 알려줘.
+색감·구도·타이포·안내 정보 우선순위 측면에서.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num" style="background:var(--ink-mute)">C</span>
+<span class="prompt-tag">// 폴더 정리 가이드</span>
+</div>
+<button class="copy-btn" data-text="교회 행정 폴더를 효율적으로 정리하는 방법을 알려줘.
+예배·교육·선교·돌봄·회의 자료 분류 기준도 함께.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">교회 행정 폴더를 효율적으로 정리하는 방법을 알려줘.
+예배·교육·선교·돌봄·회의 자료 분류 기준도 함께.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">✓ Test/chapter1 폴더에서 작업 — 실행을 시키기</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">A'</span>
+<span class="prompt-tag">// 사역 데이터 직접 가공</span>
+</div>
+<button class="copy-btn" data-text="교회_사역데이터.xlsx 파일에서 월별 예배출석·교회학교 출석·헌금 흐름을 요약해줘.
+결과는 새 시트에 정리하고 차트도 같이.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">교회_사역데이터.xlsx 파일에서 월별 예배출석·교회학교 출석·헌금 흐름을 요약해줘.
+결과는 새 시트에 정리하고 차트도 같이.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">B'</span>
+<span class="prompt-tag">// 교회 안내 이미지 일괄 생성</span>
+</div>
+<button class="copy-btn" data-text="다음 교회 행사 3개 제목으로 안내 이미지 3장을 만들어서 폴더에 저장해줘.
+
+제목1) 새가족 환영예배 안내
+제목2) 청년부 여름수련회 등록 시작
+제목3) 지역 섬김 주간 자원봉사 모집
+
+톤은 차분한 네이비 + 따뜻한 코랄, 16:9.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">다음 교회 행사 3개 제목으로 안내 이미지 3장을 만들어서 폴더에 저장해줘.
+
+제목1) 새가족 환영예배 안내
+제목2) 청년부 여름수련회 등록 시작
+제목3) 지역 섬김 주간 자원봉사 모집
+
+톤은 차분한 네이비 + 따뜻한 코랄, 16:9.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">C'</span>
+<span class="prompt-tag">// 폴더 자동 정리 실행</span>
+</div>
+<button class="copy-btn" data-text="이 폴더를 사역 종류별(예배·교육·선교/봉사·행정)로 분류해줘.
+중복 파일은 가장 최근 것만 남기기.
+작업 후 변경 내역을 마크다운 트리로 정리.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더를 사역 종류별(예배·교육·선교/봉사·행정)로 분류해줘.
+중복 파일은 가장 최근 것만 남기기.
+작업 후 변경 내역을 마크다운 트리로 정리.</pre>
+</div>
+</div></div>
+<!-- CHAPTER 02 -->
+<div class="chapter reveal visible"><div class="chapter-meta">CHAPTER 02 · 설치와 셋업</div>
+<div class="chapter-tags">
+<span class="chapter-tag cloud">5분 안에 완료</span>
+<span class="chapter-tag">Everyday Work 모드</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">02</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">5분 안에 끝나는 <em>셋업</em></h3>
+<p class="chapter-tagline">시작이 어려우면 거기서 멈춘다. 진입 장벽부터 깬다.</p>
+</div>
+</div>
+<div class="chapter-body">
+<strong>openai.com/codex</strong>에서 앱 다운로드, ChatGPT 계정으로 로그인하면 끝입니다.<br/>
+        다음 핵심은 <strong>Everyday Work 모드 토글</strong>이에요.<br/>
+        개발 위주 모드와 일반 작업 모드가 구분되어 있어서, 사역자라면 반드시 일반 모드로 시작해야 합니다.<br/>
+        마지막으로 프로젝트 폴더를 지정합니다.<br/>
+        코덱스가 어디까지 접근할지 정하는 가장 중요한 결정입니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arr-ch02" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10">
+<path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path>
+</marker>
+</defs>
+<!-- STEP 1 -->
+<g>
+<rect fill="#FFFFFF" height="120" rx="14" stroke="#E0D4C2" stroke-width="1.5" width="200" x="20" y="40"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" text-anchor="middle" x="120" y="68">STEP 1</text>
+<text font-family="Pretendard,sans-serif" font-size="36" text-anchor="middle" x="120" y="96">⬇</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="120" y="128">앱 다운로드</text>
+<text fill="#8B95A3" font-family="JetBrains Mono,monospace" font-size="10" text-anchor="middle" x="120" y="146">openai.com/codex</text>
+</g>
+<path d="M 222 100 L 248 100" marker-end="url(#arr-ch02)" stroke="#E8745B" stroke-width="2"></path>
+<!-- STEP 2 -->
+<g>
+<rect fill="#FFFFFF" height="120" rx="14" stroke="#E0D4C2" stroke-width="1.5" width="200" x="258" y="40"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" text-anchor="middle" x="358" y="68">STEP 2</text>
+<text font-family="Pretendard,sans-serif" font-size="36" text-anchor="middle" x="358" y="96">🔑</text>
+<text fill="#1B2A3E" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="358" y="128">로그인</text>
+<text fill="#8B95A3" font-family="JetBrains Mono,monospace" font-size="10" text-anchor="middle" x="358" y="146">ChatGPT 계정으로</text>
+</g>
+<path d="M 460 100 L 486 100" marker-end="url(#arr-ch02)" stroke="#E8745B" stroke-width="2"></path>
+<!-- STEP 3 (강조) -->
+<g>
+<rect fill="#1B2A3E" height="120" rx="14" width="204" x="496" y="40"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" text-anchor="middle" x="598" y="68">STEP 3 — 핵심</text>
+<text font-family="Pretendard,sans-serif" font-size="36" text-anchor="middle" x="598" y="96">📁</text>
+<text fill="#E8745B" font-family="Pretendard,sans-serif" font-size="14" font-weight="600" text-anchor="middle" x="598" y="128">폴더 지정</text>
+<text fill="#F2E8DC" font-family="JetBrains Mono,monospace" font-size="10" text-anchor="middle" x="598" y="146">Everyday Work 모드</text>
+</g>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="14" font-style="italic" text-anchor="middle" x="360" y="190">5분이면 끝, 가장 중요한 건 STEP 3 — 폴더 권한</text>
+</svg>
+</div>
+</div>
+<!-- CHAPTER 03 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 03 · 첫 임팩트</div>
+<div class="chapter-tags">
+<span class="chapter-tag">파일 시스템</span>
+<span class="chapter-tag cloud">실습 적합</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">03</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">첫 작업, <em>파일·폴더 정리</em></h3>
+<p class="chapter-tagline">진입 임팩트 가장 큰 데모. 강의 첫 시연으로 최고.</p>
+</div>
+</div>
+<div class="chapter-body">
+        최초 원본의 이미지 폴더를 그대로 사용해 파일명 변경, 분류, 변환, 요약을 시연합니다.<br/>
+        중복 파일도 자동으로 제거합니다.<br/>
+        작업이 끝나면 변경 내역을 <strong>마크다운 트리</strong>로 정리해 보여줍니다.<br/>
+        한 명령으로 정리·분류·변환·문서화까지 한 번에 보여주면, 여름사역 자료 관리의 감이 바로 잡힙니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+<!-- BEFORE: 어지러운 폴더 -->
+<g>
+<rect fill="#FBF5ED" height="220" rx="14" stroke="#E0D4C2" stroke-width="1.5" width="300" x="20" y="20"></rect>
+<text fill="#8B95A3" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" x="36" y="46">BEFORE · Downloads/</text>
+<line stroke="#E0D4C2" x1="36" x2="304" y1="58" y2="58"></line>
+<!-- 어지러운 파일들 -->
+<g fill="#4A5A6E" font-family="JetBrains Mono,monospace" font-size="11">
+<text x="36" y="80">📄 보고서_v3_최종.docx</text>
+<text x="36" y="100">🖼 IMG_4521.png</text>
+<text x="36" y="120">📄 보고서_v3_진짜최종.docx</text>
+<text x="36" y="140">🎬 회의녹화.mp4</text>
+<text x="36" y="160">📦 backup.zip</text>
+<text x="36" y="180">🖼 스크린샷 2026-05-13.png</text>
+<text x="36" y="200">📄 보고서_v3_최종2.docx</text>
+<text x="36" y="220">🖼 IMG_4522.png</text>
+</g>
+</g>
+<!-- 화살표 + 명령 -->
+<text fill="#E8745B" font-family="Instrument Serif,serif" font-size="20" font-style="italic" text-anchor="middle" x="360" y="116">→</text>
+<text fill="#8B95A3" font-family="JetBrains Mono,monospace" font-size="9" text-anchor="middle" x="360" y="140">한 명령</text>
+<!-- AFTER: 정리된 트리 -->
+<g>
+<rect fill="#1B2A3E" height="220" rx="14" width="300" x="400" y="20"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" letter-spacing="1.5" x="416" y="46">AFTER · Downloads/</text>
+<line stroke="rgba(232,116,91,0.2)" x1="416" x2="684" y1="58" y2="58"></line>
+<g fill="#F2E8DC" font-family="JetBrains Mono,monospace" font-size="11">
+<text x="416" y="82">📁 documents/</text>
+<text fill="#E8B870" x="436" y="100">└─ 보고서_v3.docx</text>
+<text x="416" y="124">📁 images/</text>
+<text fill="#E8B870" x="436" y="142">└─ IMG_4521.png</text>
+<text fill="#E8B870" x="436" y="158">└─ IMG_4522.png</text>
+<text x="416" y="182">📁 videos/</text>
+<text fill="#E8B870" x="436" y="200">└─ 회의녹화.mp4</text>
+<text x="416" y="224">📁 screenshots/</text>
+</g>
+</g>
+</svg>
+</div><div class="chapter-prompts">
+<div class="prompts-label">🖼 Test/chapter3/Image 폴더에서 작업 — 원본 이미지 실습 6단계</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">1단계</span>
+<span class="prompt-tag">// 폴더 내용 파악</span>
+</div>
+<button class="copy-btn" data-text="이 폴더 내용을 파악해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더 내용을 파악해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">2단계</span>
+<span class="prompt-tag">// 파일명 동물 이름으로</span>
+</div>
+<button class="copy-btn" data-text="이 폴더 안의 이미지 파일 이름을 동물 이름으로 바꿔줘.
+단, 원래 파일명의 번호는 유지해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더 안의 이미지 파일 이름을 동물 이름으로 바꿔줘.
+단, 원래 파일명의 번호는 유지해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">3단계</span>
+<span class="prompt-tag">// 식성별 폴더 분류</span>
+</div>
+<button class="copy-btn" data-text="동물 이미지를 육식, 초식, 잡식으로 구분하고,
+각각의 폴더를 만들어 정리해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">동물 이미지를 육식, 초식, 잡식으로 구분하고,
+각각의 폴더를 만들어 정리해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">4단계</span>
+<span class="prompt-tag">// 마크다운 트리 작성</span>
+</div>
+<button class="copy-btn" data-text="네가 정리한 내용을 md 파일로 트리 형식으로 보여줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">네가 정리한 내용을 md 파일로 트리 형식으로 보여줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">5단계</span>
+<span class="prompt-tag">// 이미지 jpg 변환</span>
+</div>
+<button class="copy-btn" data-text="이 폴더에 있는 이미지 파일은 모두 jpg로 바꿔줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더에 있는 이미지 파일은 모두 jpg로 바꿔줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">6단계</span>
+<span class="prompt-tag">// 동물 특징 요약</span>
+</div>
+<button class="copy-btn" data-text="각 동물들의 특징을 각각 한 줄로 요약하고,
+여름성경학교 동물 비유 활동에 어떻게 연결할 수 있을지도 md 파일로 정리해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">각 동물들의 특징을 각각 한 줄로 요약하고,
+여름성경학교 동물 비유 활동에 어떻게 연결할 수 있을지도 md 파일로 정리해줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">📁 Test/chapter3/File 폴더에서 작업 — 여름성경학교 자료 4단계</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">1단계</span>
+<span class="prompt-tag">// 파일 목록 확인</span>
+</div>
+<button class="copy-btn" data-text="이 폴더에는 어떤 여름성경학교 자료들이 있지?">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더에는 어떤 여름성경학교 자료들이 있지?</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">2단계</span>
+<span class="prompt-tag">// 확장자 일괄 변경</span>
+</div>
+<button class="copy-btn" data-text="파일 확장자를 모두 txt로 바꿔줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">파일 확장자를 모두 txt로 바꿔줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">3단계</span>
+<span class="prompt-tag">// 폴더 구조 제안</span>
+</div>
+<button class="copy-btn" data-text="이 폴더의 여름성경학교 자료를 새로운 폴더로 정리하고 싶은데,
+어떻게 하면 좋을지 제안해줘.">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이 폴더의 여름성경학교 자료를 새로운 폴더로 정리하고 싶은데,
+어떻게 하면 좋을지 제안해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head">
+<div class="prompt-label">
+<span class="prompt-num">4단계</span>
+<span class="prompt-tag">// 제안 트리 적용</span>
+</div>
+<button class="copy-btn" data-text="이렇게 해줘.
+
+여름성경학교_자료/
+├── 01_기획_일정/
+├── 02_교사_매뉴얼/
+├── 03_가정통신문/
+├── 04_홍보_디자인/
+├── 05_안전_체크리스트/
+└── 99_기타_분류대기/">
+<svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+COPY
+</button>
+</div>
+<pre class="prompt-body">이렇게 해줘.
+
+여름성경학교_자료/
+├── 01_기획_일정/
+├── 02_교사_매뉴얼/
+├── 03_가정통신문/
+├── 04_홍보_디자인/
+├── 05_안전_체크리스트/
+└── 99_기타_분류대기/</pre>
+</div>
+</div>
+</div>
+
+<!-- CHAPTER 04 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 04 · 기획하기</div>
+<div class="chapter-tags">
+<span class="chapter-tag">DOCX 기획안</span>
+<span class="chapter-tag cloud">총회 주제 반영</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">04</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">여름성경학교 <em>기획안 만들기</em></h3>
+<p class="chapter-tagline">흩어진 자료를 읽고, 방향을 세우고, 제출 가능한 워드 문서로 완성한다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        총회 아동부 주제 자료와 교회 상황 자료를 한 폴더에 넣고 시작합니다.<br/>
+        코덱스는 자료를 요약하고, 기획 방향을 비교하고, 목차를 설계한 뒤 <strong>제출용 docx 기획안</strong>까지 만듭니다.<br/>
+        이 챕터의 핵심은 “빈 문서 작성”이 아니라 <strong>이미 가진 자료를 사역 기획으로 구조화하는 경험</strong>입니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 230" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-ch04" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10"><path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path></marker></defs>
+<g font-family="Pretendard,sans-serif">
+<rect fill="#FBF5ED" height="70" rx="14" stroke="#E0D4C2" width="150" x="20" y="80"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="95" y="106">INPUT</text>
+<text fill="#1B2A3E" font-size="13" font-weight="600" text-anchor="middle" x="95" y="130">총회 자료 + 교회 자료</text>
+<path d="M 176 115 L 218 115" marker-end="url(#arr-ch04)" stroke="#E8745B" stroke-width="2"></path>
+<rect fill="#FFFFFF" height="70" rx="14" stroke="#E0D4C2" width="150" x="226" y="80"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="301" y="106">PLAN</text>
+<text fill="#1B2A3E" font-size="13" font-weight="600" text-anchor="middle" x="301" y="130">요약 · 방향 · 목차</text>
+<path d="M 382 115 L 424 115" marker-end="url(#arr-ch04)" stroke="#E8745B" stroke-width="2"></path>
+<rect fill="#1B2A3E" height="70" rx="14" width="150" x="432" y="80"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="507" y="106">OUTPUT</text>
+<text fill="#F2E8DC" font-size="13" font-weight="600" text-anchor="middle" x="507" y="130">기획안 DOCX</text>
+<path d="M 588 115 L 630 115" marker-end="url(#arr-ch04)" stroke="#E8745B" stroke-width="2"></path>
+<rect fill="#9CBA6E" height="70" rx="14" width="70" x="636" y="80"></rect>
+<text fill="#FFFFFF" font-size="24" font-weight="700" text-anchor="middle" x="671" y="122">✓</text>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="15" font-style="italic" text-anchor="middle" x="360" y="190">자료 읽기에서 제출 문서까지, 기획의 전 과정을 한 흐름으로</text>
+</g>
+</svg>
+</div>
+<div class="chapter-prompts">
+<div class="prompts-label">📄 Test/chapter4 폴더에서 작업 — 여름성경학교 기획안 만들기 5단계</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 자료 요약</span></div><button class="copy-btn" data-text="이 폴더의 자료들을 모두 읽고, 올해 여름성경학교 기획에 필요한 핵심 정보를 요약해줘.
+총회 주제, 주제말씀, 교회 기본정보, 지난해 회고, 올해 사역조건, 예산 중심으로 정리해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">이 폴더의 자료들을 모두 읽고, 올해 여름성경학교 기획에 필요한 핵심 정보를 요약해줘.
+총회 주제, 주제말씀, 교회 기본정보, 지난해 회고, 올해 사역조건, 예산 중심으로 정리해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">2단계</span><span class="prompt-tag">// 기획 방향 3안</span></div><button class="copy-btn" data-text="요약한 내용을 바탕으로 올해 여름성경학교 기획 방향을 3가지 안으로 제안해줘.
+각 안마다 주제 해석, 핵심 메시지, 프로그램 톤, 장점, 주의점을 표로 비교해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">요약한 내용을 바탕으로 올해 여름성경학교 기획 방향을 3가지 안으로 제안해줘.
+각 안마다 주제 해석, 핵심 메시지, 프로그램 톤, 장점, 주의점을 표로 비교해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">3단계</span><span class="prompt-tag">// 목차 설계</span></div><button class="copy-btn" data-text="가장 현실적인 안 하나를 골라서 제출용 기획안 목차를 만들어줘.
+목차에는 기획 의도, 목표, 일정표, 세부 프로그램, 인력, 예산, 안전관리, 보호자 안내, 후속 양육을 포함해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">가장 현실적인 안 하나를 골라서 제출용 기획안 목차를 만들어줘.
+목차에는 기획 의도, 목표, 일정표, 세부 프로그램, 인력, 예산, 안전관리, 보호자 안내, 후속 양육을 포함해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">4단계</span><span class="prompt-tag">// 초안 작성</span></div><button class="copy-btn" data-text="위 목차를 바탕으로 실제 제출용 기획안 초안을 작성해줘.
+교역자와 부서장이 바로 검토할 수 있는 문체로 쓰고, 예산 초안의 주요 항목도 반영해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">위 목차를 바탕으로 실제 제출용 기획안 초안을 작성해줘.
+교역자와 부서장이 바로 검토할 수 있는 문체로 쓰고, 예산 초안의 주요 항목도 반영해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">5단계</span><span class="prompt-tag">// DOCX 완성</span></div><button class="copy-btn" data-text="06_기획안_양식.docx를 참고해서 작성한 내용을 제출용 기획안 docx로 완성해줘.
+파일명은 2026_여름성경학교_기획안.docx로 저장하고, 표지, 일정표, 예산 요약표, 안전관리 계획을 포함해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">06_기획안_양식.docx를 참고해서 작성한 내용을 제출용 기획안 docx로 완성해줘.
+파일명은 2026_여름성경학교_기획안.docx로 저장하고, 표지, 일정표, 예산 요약표, 안전관리 계획을 포함해줘.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- CHAPTER 05 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 05 · 홍보하기</div>
+<div class="chapter-tags">
+<span class="chapter-tag">브랜딩</span>
+<span class="chapter-tag cloud">PPT · Canva · Suno</span>
+<span class="chapter-tag sky">홍보물 제작</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">05</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">성경학교를 <em>보이게 만들기</em></h3>
+<p class="chapter-tagline">기획안의 메시지를 포스터, PPT, 주제가까지 확장한다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        기획안이 완성되면 다음은 홍보와 현장 콘텐츠입니다.<br/>
+        먼저 브랜딩 기준을 정하고, 포스터·명찰·현수막·배너·시간표·초대장으로 확장합니다.<br/>
+        이어 설교문을 PPT로 만들고 Canva에서 편집할 수 있게 내보내며, 마지막으로 Suno 주제가 제작까지 실습합니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 240" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-ch05" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10"><path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path></marker></defs>
+<g font-family="Pretendard,sans-serif">
+<rect fill="#1B2A3E" height="56" rx="14" width="220" x="250" y="22"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="360" y="45">BRAND CORE</text>
+<text fill="#F2E8DC" font-size="13" font-weight="600" text-anchor="middle" x="360" y="63">용서받고 사랑하고, 고고 대모험!</text>
+<path d="M 360 82 L 360 104" stroke="#E8745B" stroke-width="2"></path>
+<path d="M 360 104 L 130 126" marker-end="url(#arr-ch05)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 104 L 360 126" marker-end="url(#arr-ch05)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 104 L 590 126" marker-end="url(#arr-ch05)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<rect fill="#FFFFFF" height="82" rx="14" stroke="#E0D4C2" width="190" x="35" y="130"></rect>
+<text font-size="24" text-anchor="middle" x="130" y="158">🎨</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="130" y="184">홍보물 세트</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="130" y="202">포스터 · 명찰 · 배너</text>
+<rect fill="#FFFFFF" height="82" rx="14" stroke="#E0D4C2" width="190" x="265" y="130"></rect>
+<text font-size="24" text-anchor="middle" x="360" y="158">📽</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="360" y="184">설교 PPT</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="360" y="202">PPTX → Canva 편집</text>
+<rect fill="#FFFFFF" height="82" rx="14" stroke="#E0D4C2" width="190" x="495" y="130"></rect>
+<text font-size="24" text-anchor="middle" x="590" y="158">🎵</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="590" y="184">주제가</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="590" y="202">Suno 가사 · 스타일</text>
+</g>
+</svg>
+</div>
+<div class="chapter-prompts">
+<div class="prompts-label">🎨 Test/chapter5/01_브랜딩_홍보물 폴더에서 작업 — 브랜딩과 홍보물 만들기</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 브랜딩 설정</span></div><button class="copy-btn" data-text="이 폴더의 자료를 읽고 올해 여름성경학교 브랜딩 가이드를 정리해줘.
+브랜드 핵심 메시지, 색상, 그래픽 모티프, 문구 스타일, 사용 금지 요소까지 포함해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">이 폴더의 자료를 읽고 올해 여름성경학교 브랜딩 가이드를 정리해줘.
+브랜드 핵심 메시지, 색상, 그래픽 모티프, 문구 스타일, 사용 금지 요소까지 포함해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">2단계</span><span class="prompt-tag">// 홍보물 세트 제작</span></div><button class="copy-btn" data-text="브랜딩 기준을 적용해서 포스터, 명찰, 현수막, 배너, 시간표, 초대장 디자인 초안을 만들어줘.
+각 산출물은 용도, 크기, 들어갈 문구, 디자인 방향을 표로 정리하고, 실제 생성할 파일 목록도 제안해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">브랜딩 기준을 적용해서 포스터, 명찰, 현수막, 배너, 시간표, 초대장 디자인 초안을 만들어줘.
+각 산출물은 용도, 크기, 들어갈 문구, 디자인 방향을 표로 정리하고, 실제 생성할 파일 목록도 제안해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">3단계</span><span class="prompt-tag">// 이미지 산출물 생성</span></div><button class="copy-btn" data-text="위 디자인 초안을 바탕으로 GPT Image 2를 사용해서 홍보물 시안 이미지를 만들어줘.
+이 폴더 안에 output 폴더를 만들고, 포스터 1장, 모바일 초대장 1장, 현수막 1장, 명찰 샘플 3종을 모두 output 폴더에 저장해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">위 디자인 초안을 바탕으로 GPT Image 2를 사용해서 홍보물 시안 이미지를 만들어줘.
+이 폴더 안에 output 폴더를 만들고, 포스터 1장, 모바일 초대장 1장, 현수막 1장, 명찰 샘플 3종을 모두 output 폴더에 저장해줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">📽 Test/chapter5/02_설교PPT_Canva 폴더에서 작업 — 설교 PPT 만들기 + Canva 편집</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 설교 PPT 구성</span></div><button class="copy-btn" data-text="01_설교문_용서받고_사랑하고.docx를 읽고 어린이 예배용 설교 PPT 구성을 만들어줘.
+슬라이드는 8장 내외로 하고, 각 슬라이드의 제목, 핵심 문장, 이미지 방향, 발표 메모를 표로 정리해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">01_설교문_용서받고_사랑하고.docx를 읽고 어린이 예배용 설교 PPT 구성을 만들어줘.
+슬라이드는 8장 내외로 하고, 각 슬라이드의 제목, 핵심 문장, 이미지 방향, 발표 메모를 표로 정리해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">2단계</span><span class="prompt-tag">// PPTX 제작</span></div><button class="copy-btn" data-text="위 구성을 바탕으로 16:9 설교 PPTX를 만들어줘.
+어린이가 보기 쉽게 글자는 크게, 한 슬라이드에는 핵심 문장 하나만 넣고, 파일명은 용서받은_사람의_대모험_설교PPT.pptx로 저장해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">위 구성을 바탕으로 16:9 설교 PPTX를 만들어줘.
+어린이가 보기 쉽게 글자는 크게, 한 슬라이드에는 핵심 문장 하나만 넣고, 파일명은 용서받은_사람의_대모험_설교PPT.pptx로 저장해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">3단계</span><span class="prompt-tag">// Canva 편집</span></div><button class="copy-btn" data-text="방금 만든 PPTX를 Canva로 가져가 편집할 수 있게 준비해줘.
+Canva에서 수정하면 좋은 항목과 표지/마무리 슬라이드 보강 방향도 함께 정리해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">방금 만든 PPTX를 Canva로 가져가 편집할 수 있게 준비해줘.
+Canva에서 수정하면 좋은 항목과 표지/마무리 슬라이드 보강 방향도 함께 정리해줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">🎵 Test/chapter5/03_Suno_주제가 폴더에서 작업 — Suno 주제가 만들기</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 주제가 콘셉트</span></div><button class="copy-btn" data-text="01_Suno_주제가_가사_프롬프트.md를 읽고 성경학교 주제가 콘셉트를 3가지 버전으로 제안해줘.
+각 버전마다 장르, 속도, 후렴 훅, 율동 포인트, 주의점을 비교해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">01_Suno_주제가_가사_프롬프트.md를 읽고 성경학교 주제가 콘셉트를 3가지 버전으로 제안해줘.
+각 버전마다 장르, 속도, 후렴 훅, 율동 포인트, 주의점을 비교해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">2단계</span><span class="prompt-tag">// Suno 입력문 완성</span></div><button class="copy-btn" data-text="가장 적합한 버전을 골라 Suno에 바로 넣을 수 있는 스타일 프롬프트와 가사를 완성해줘.
+어린이들이 따라 부르기 쉬운 한국어 가사로 만들고, [Verse], [Pre-Chorus], [Chorus], [Bridge] 구조를 유지해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">가장 적합한 버전을 골라 Suno에 바로 넣을 수 있는 스타일 프롬프트와 가사를 완성해줘.
+어린이들이 따라 부르기 쉬운 한국어 가사로 만들고, [Verse], [Pre-Chorus], [Chorus], [Bridge] 구조를 유지해줘.</pre>
+</div>
+</div>
+</div>
+
+
+<!-- CHAPTER 06 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 06 · 운영하기</div>
+<div class="chapter-tags">
+<span class="chapter-tag">바이브코딩</span>
+<span class="chapter-tag cloud">현장 운영 앱</span>
+<span class="chapter-tag sky">HTML · CSS · JS</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">06</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">성경학교를 <em>움직이게 만들기</em></h3>
+<p class="chapter-tagline">기획안이 현장에 도착하는 순간, 작은 운영 앱이 사역자의 손을 가볍게 한다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        마지막 챕터는 문서와 홍보물을 넘어 <strong>현장에서 바로 눌러 쓰는 도구</strong>를 만듭니다.<br/>
+        오늘 날짜 기준 TodoList로 준비 상황을 보고, 랜덤 1·2·3등 뽑기와 조 섞기로 레크리에이션을 돕고,
+        실시간 조별 점수판으로 상점과 벌점을 관리합니다.<br/>
+        핵심은 개발 지식이 아니라 <strong>필요한 운영 장면을 말로 설명하고, 코덱스가 작은 앱으로 바꾸는 경험</strong>입니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-ch06" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10"><path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path></marker></defs>
+<g font-family="Pretendard,sans-serif">
+<rect fill="#1B2A3E" height="64" rx="16" width="250" x="235" y="18"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="360" y="43">VIBE CODING</text>
+<text fill="#F2E8DC" font-size="14" font-weight="700" text-anchor="middle" x="360" y="63">말로 설명하면 운영 앱이 된다</text>
+<path d="M 360 86 L 360 108" stroke="#E8745B" stroke-width="2"></path>
+<path d="M 360 108 L 112 132" marker-end="url(#arr-ch06)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 108 L 277 132" marker-end="url(#arr-ch06)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 108 L 443 132" marker-end="url(#arr-ch06)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 108 L 608 132" marker-end="url(#arr-ch06)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<rect fill="#FFFFFF" height="88" rx="14" stroke="#E0D4C2" width="150" x="35" y="136"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="110" y="162">TODO</text>
+<text fill="#1B2A3E" font-size="13" font-weight="700" text-anchor="middle" x="110" y="185">진행상황</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="110" y="204">D-day · 준비율</text>
+<rect fill="#FFFFFF" height="88" rx="14" stroke="#E0D4C2" width="150" x="210" y="136"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="285" y="162">RANK</text>
+<text fill="#1B2A3E" font-size="13" font-weight="700" text-anchor="middle" x="285" y="185">1·2·3등 뽑기</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="285" y="204">중복 없는 추첨</text>
+<rect fill="#FFFFFF" height="88" rx="14" stroke="#E0D4C2" width="150" x="385" y="136"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="460" y="162">TEAMS</text>
+<text fill="#1B2A3E" font-size="13" font-weight="700" text-anchor="middle" x="460" y="185">랜덤 조 섞기</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="460" y="204">학년 · 성별 균형</text>
+<rect fill="#FFFFFF" height="88" rx="14" stroke="#E0D4C2" width="150" x="560" y="136"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="635" y="162">SCORE</text>
+<text fill="#1B2A3E" font-size="13" font-weight="700" text-anchor="middle" x="635" y="185">조별 점수판</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="635" y="204">상점 · 벌점 · 순위</text>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="15" font-style="italic" text-anchor="middle" x="360" y="246">기획안에서 현장 운영 도구까지, 한 폴더 안에서 바로 만든다</text>
+</g>
+</svg>
+</div>
+<div class="chapter-prompts">
+<div class="prompts-label">✅ Test/chapter6/01_운영_TodoList 폴더에서 작업 — 준비 진행상황 Todo 앱</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// DOCX 기반 Todo 앱</span></div><button class="copy-btn" data-text="2026_소망샘교회_여름성경학교_운영기획안_샘플.docx를 읽고, 오늘 날짜 기준으로 여름성경학교 준비 진행상황을 한눈에 볼 수 있는 TodoList 웹앱을 만들어줘.
+HTML/CSS/JS를 한 파일로 만들고, D-day, 전체 진행률, 영역별 진행률, 마감 임박 항목 강조, 상태 변경 기능, 브라우저 저장 기능을 포함해줘.
+파일명은 vbs_todolist.html로 저장하고 인앱브라우저에서 바로 열어줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">2026_소망샘교회_여름성경학교_운영기획안_샘플.docx를 읽고, 오늘 날짜 기준으로 여름성경학교 준비 진행상황을 한눈에 볼 수 있는 TodoList 웹앱을 만들어줘.
+HTML/CSS/JS를 한 파일로 만들고, D-day, 전체 진행률, 영역별 진행률, 마감 임박 항목 강조, 상태 변경 기능, 브라우저 저장 기능을 포함해줘.
+파일명은 vbs_todolist.html로 저장하고 인앱브라우저에서 바로 열어줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">🏆 Test/chapter6/02_랜덤_순서뽑기 폴더에서 작업 — 랜덤 1·2·3등 뽑기 앱</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// XLSX 기반 순위 추첨 앱</span></div><button class="copy-btn" data-text="2026_성경학교_학생명단_샘플.xlsx를 읽고, 성경학교 레크리에이션에서 사용할 랜덤 순서 뽑기 웹앱을 만들어줘.
+엑셀의 학년, 이름, 성별 정보를 참가자 목록으로 사용하고, 화면에는 이름과 학년/성별이 함께 보이게 해줘.
+참가자 추가/삭제, 1등·2등·3등 중복 없는 추첨, 다시 뽑기, 결과 크게 보기, 브라우저 저장 기능을 포함해줘.
+추첨하는 과정이 실시간 애니메이션으로 보이도록 해줘.
+어린이 예배 레크리에이션에 어울리는 밝고 선명한 화면으로 만들고, 파일명은 random_rank_picker.html로 저장한 뒤 인앱브라우저에서 열어줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">2026_성경학교_학생명단_샘플.xlsx를 읽고, 성경학교 레크리에이션에서 사용할 랜덤 순서 뽑기 웹앱을 만들어줘.
+엑셀의 학년, 이름, 성별 정보를 참가자 목록으로 사용하고, 화면에는 이름과 학년/성별이 함께 보이게 해줘.
+참가자 추가/삭제, 1등·2등·3등 중복 없는 추첨, 다시 뽑기, 결과 크게 보기, 브라우저 저장 기능을 포함해줘.
+추첨하는 과정이 실시간 애니메이션으로 보이도록 해줘.
+어린이 예배 레크리에이션에 어울리는 밝고 선명한 화면으로 만들고, 파일명은 random_rank_picker.html로 저장한 뒤 인앱브라우저에서 열어줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">🔀 Test/chapter6/03_랜덤_조섞기 폴더에서 작업 — 랜덤 조 편성 앱</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// XLSX 기반 조 섞기 앱</span></div><button class="copy-btn" data-text="2026_성경학교_학생명단_샘플.xlsx를 읽고, 성경학교 당일 사용할 랜덤 조 섞기 웹앱을 만들어줘.
+엑셀의 50명 학생을 참가자 목록으로 사용하고, 학년과 성별이 각 조에 최대한 고르게 섞이도록 고려해줘.
+기본 조 이름은 사랑조, 기쁨조, 믿음조, 소망조, 은혜조로 해줘.
+기본 5개 조일 때는 각 조가 10명씩 되도록 인원 수를 균등하게 맞추고, 조 수를 바꿔도 조별 인원 차이가 1명을 넘지 않게 해줘.
+조 수 변경, 학생 추가/삭제, 다시 섞기, 학년/성별 균형 점검, 조별 결과 표 보기, 브라우저 저장 기능을 포함해줘.
+현재 조 편성 결과를 엑셀로 저장하기 버튼도 만들어줘. 저장 파일은 Excel에서 바로 열리는 실제 .xlsx 형식이어야 하고, 파일명은 성경학교_조편성결과_날짜.xlsx로 해줘.
+파일명은 random_team_mixer.html로 저장하고 인앱브라우저에서 열어줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">2026_성경학교_학생명단_샘플.xlsx를 읽고, 성경학교 당일 사용할 랜덤 조 섞기 웹앱을 만들어줘.
+엑셀의 50명 학생을 참가자 목록으로 사용하고, 학년과 성별이 각 조에 최대한 고르게 섞이도록 고려해줘.
+기본 조 이름은 사랑조, 기쁨조, 믿음조, 소망조, 은혜조로 해줘.
+기본 5개 조일 때는 각 조가 10명씩 되도록 인원 수를 균등하게 맞추고, 조 수를 바꿔도 조별 인원 차이가 1명을 넘지 않게 해줘.
+조 수 변경, 학생 추가/삭제, 다시 섞기, 학년/성별 균형 점검, 조별 결과 표 보기, 브라우저 저장 기능을 포함해줘.
+현재 조 편성 결과를 엑셀로 저장하기 버튼도 만들어줘. 저장 파일은 Excel에서 바로 열리는 실제 .xlsx 형식이어야 하고, 파일명은 성경학교_조편성결과_날짜.xlsx로 해줘.
+파일명은 random_team_mixer.html로 저장하고 인앱브라우저에서 열어줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">📊 Test/chapter6/04_실시간_점수판 폴더에서 작업 — 조별 상점/벌점 점수판 앱</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 실시간 점수판</span></div><button class="copy-btn" data-text="성경학교 조별 상점/벌점 실시간 점수판 웹앱을 만들어줘.
+기본 조는 사랑조, 기쁨조, 믿음조, 소망조로 하고, 점수 규칙은 말씀 암송 성공 +10, 찬양 율동 적극 참여 +5, 친구 도와주기 +5, 조별 미션 성공 +15, 정리정돈 우수 +5, 진행 방해 -5, 안전 약속 위반 -10으로 넣어줘.
+조별 점수 카드, 상점/벌점 버튼, 점수 변경 내역, 현재 순위 자동 정렬, 마지막 기록 취소, 전체 초기화, 브라우저 저장 기능을 포함해줘.
+빔프로젝터로 띄워도 잘 보이도록 큰 글씨와 선명한 대비로 만들고, 파일명은 live_team_scoreboard.html로 저장한 뒤 인앱브라우저에서 열어줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">성경학교 조별 상점/벌점 실시간 점수판 웹앱을 만들어줘.
+기본 조는 사랑조, 기쁨조, 믿음조, 소망조로 하고, 점수 규칙은 말씀 암송 성공 +10, 찬양 율동 적극 참여 +5, 친구 도와주기 +5, 조별 미션 성공 +15, 정리정돈 우수 +5, 진행 방해 -5, 안전 약속 위반 -10으로 넣어줘.
+조별 점수 카드, 상점/벌점 버튼, 점수 변경 내역, 현재 순위 자동 정렬, 마지막 기록 취소, 전체 초기화, 브라우저 저장 기능을 포함해줘.
+빔프로젝터로 띄워도 잘 보이도록 큰 글씨와 선명한 대비로 만들고, 파일명은 live_team_scoreboard.html로 저장한 뒤 인앱브라우저에서 열어줘.</pre>
+</div>
+<div class="prompts-label" style="margin-top:32px;">💬 인앱브라우저 주석 달기 — 화면을 보면서 수정 요청하기</div>
+<div class="chapter-body" style="margin-bottom:0;">
+        코덱스가 만든 웹앱은 인앱브라우저에서 바로 열어보고, 마음에 걸리는 부분을 <strong>화면 위에 직접 주석</strong>으로 남길 수 있습니다.<br/>
+        버튼 크기, 글자 줄바꿈, 색상, 배치처럼 말로 설명하기 애매한 부분을 클릭해 표시한 뒤 “여기 숫자가 너무 작아요”, “이 버튼을 더 눈에 띄게 해줘”처럼 요청하면 됩니다.<br/>
+        코덱스는 주석이 달린 위치와 화면 캡처 맥락을 함께 읽고, 해당 HTML/CSS/JS를 찾아 바로 고칩니다.
+      </div>
+<div class="chapter-viz" style="margin-top:24px;">
+<svg viewbox="0 0 720 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-comment" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10"><path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path></marker></defs>
+<g font-family="Pretendard,sans-serif">
+<rect fill="#FFFFFF" height="82" rx="14" stroke="#E0D4C2" width="180" x="28" y="64"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="118" y="91">STEP 1</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="118" y="116">앱을 열어본다</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="118" y="134">인앱브라우저 미리보기</text>
+<path d="M 216 105 L 262 105" marker-end="url(#arr-comment)" stroke="#E8745B" stroke-width="2"></path>
+<rect fill="#FFFFFF" height="82" rx="14" stroke="#E0D4C2" width="180" x="270" y="64"></rect>
+<circle cx="410" cy="82" fill="#2E90FA" r="14"></circle>
+<text fill="#FFFFFF" font-size="12" font-weight="800" text-anchor="middle" x="410" y="86">1</text>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="360" y="91">STEP 2</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="360" y="116">문제 위치에 주석</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="360" y="134">클릭하고 한 줄 요청</text>
+<path d="M 458 105 L 504 105" marker-end="url(#arr-comment)" stroke="#E8745B" stroke-width="2"></path>
+<rect fill="#1B2A3E" height="82" rx="14" width="180" x="512" y="64"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="602" y="91">STEP 3</text>
+<text fill="#F2E8DC" font-size="14" font-weight="700" text-anchor="middle" x="602" y="116">코덱스가 수정</text>
+<text fill="#B8C0CC" font-size="11" text-anchor="middle" x="602" y="134">위치 기반으로 코드 반영</text>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="15" font-style="italic" text-anchor="middle" x="360" y="180">“말로 설명하기 어려운 수정”은 화면에 바로 표시하면 된다</text>
+</g>
+</svg>
+</div>
+</div>
+</div>
+
+<!-- CHAPTER 07 -->
+<div class="chapter reveal visible">
+<div class="chapter-meta">CHAPTER 07 · 평가하기 및 클로징</div>
+<div class="chapter-tags">
+<span class="chapter-tag">마무리</span>
+<span class="chapter-tag cloud">피드백 수집</span>
+<span class="chapter-tag sky">Rolling Paper · Survey</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">07</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">성경학교를 <em>다음 사역으로 연결하기</em></h3>
+<p class="chapter-tagline">감사와 피드백을 구조화해 다음 준비의 출발점으로 남긴다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        마지막 챕터는 “끝났다”에서 멈추지 않고 <strong>무엇이 남았는지 정리하는 시간</strong>입니다.<br/>
+        롤링페이퍼로 서로의 마음을 남기고, 보호자·교사·어린이를 위한 피드백 설문문항을 만듭니다.<br/>
+        이렇게 모은 자료는 다음 성경학교 기획안의 가장 현실적인 출발점이 됩니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 250" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arr-ch07" markerheight="6" markerwidth="6" orient="auto" refx="8" refy="5" viewbox="0 0 10 10"><path d="M2 1 L8 5 L2 9" fill="none" stroke="#E8745B" stroke-linecap="round" stroke-width="1.8"></path></marker></defs>
+<g font-family="Pretendard,sans-serif">
+<rect fill="#1B2A3E" height="62" rx="16" width="250" x="235" y="18"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="360" y="43">CLOSING LOOP</text>
+<text fill="#F2E8DC" font-size="14" font-weight="700" text-anchor="middle" x="360" y="62">감사 · 피드백을 다음 자료로 남긴다</text>
+<path d="M 360 84 L 360 106" stroke="#E8745B" stroke-width="2"></path>
+<path d="M 360 106 L 228 130" marker-end="url(#arr-ch07)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<path d="M 360 106 L 492 130" marker-end="url(#arr-ch07)" stroke="#E8745B" stroke-dasharray="4 3" stroke-width="1.5"></path>
+<rect fill="#FFFFFF" height="86" rx="14" stroke="#E0D4C2" width="220" x="118" y="134"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="228" y="160">THANKS</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="228" y="184">롤링페이퍼</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="228" y="202">감사 · 격려 · 기도제목</text>
+<rect fill="#FFFFFF" height="86" rx="14" stroke="#E0D4C2" width="220" x="382" y="134"></rect>
+<text fill="#E8745B" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" text-anchor="middle" x="492" y="160">SURVEY</text>
+<text fill="#1B2A3E" font-size="14" font-weight="700" text-anchor="middle" x="492" y="184">피드백 설문</text>
+<text fill="#8B95A3" font-size="11" text-anchor="middle" x="492" y="202">다음 사역 개선 자료</text>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="15" font-style="italic" text-anchor="middle" x="360" y="238">클로징 자료는 다음 기획의 첫 자료가 된다</text>
+</g>
+</svg>
+</div>
+<div class="chapter-prompts">
+<div class="prompts-label">💌 Test/chapter7/01_롤링페이퍼 폴더에서 작업 — 롤링페이퍼 웹앱 만들기</div>
+<div class="chapter-body" style="margin-bottom:18px;">
+        <strong>Plan mode와 Computer Use를 함께 쓰는 실습</strong><br/>
+        Plan mode는 코덱스가 먼저 작업 순서와 확인 지점을 세우게 하는 방식입니다.
+        Google Sheets, Apps Script, 웹앱 배포처럼 단계가 많은 작업에서는 중간에 빠지는 것이 줄어듭니다.
+        Computer Use는 코덱스가 브라우저 화면을 실제로 열고 메뉴 클릭, 코드 붙여넣기, 배포 화면 확인 같은 작업을 도와주는 기능입니다.
+        권한 승인처럼 계정 보안이 걸린 순간에는 사용자가 직접 클릭하고, 그 다음 단계부터 코덱스가 다시 이어갑니다.
+      </div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// Google Sheets 연동 롤링페이퍼</span></div><button class="copy-btn" data-text="Plan mode로 먼저 전체 작업 계획을 세운 뒤 진행해줘. 필요하면 Computer Use와 인앱브라우저를 사용해서 Google Sheets와 Apps Script 배포 화면까지 실제로 열어 확인해줘.
+
+2026_성경학교_롤링페이퍼_명단_샘플.xlsx를 읽고, 여러 핸드폰에서 동시에 입력할 수 있는 Google Sheets 연동 롤링페이퍼 웹앱을 만들어줘.
+엑셀의 학년, 조, 이름, 역할 정보를 기본 명단으로 사용하고, 명단 인원수는 파일에 들어 있는 전체 데이터를 기준으로 계산해줘. 학생, 교사, 교역자 같은 역할별 인원도 자동 요약해줘.
+
+Google Sheets에는 명단 시트와 메시지 시트를 만들어줘.
+명단 시트는 학년, 조, 이름, 역할 컬럼으로 구성하고, 메시지 시트는 ID, 작성시간, 조, 작성자, 받는 사람, 받는 사람 역할, 태그, 메시지 컬럼으로 구성해줘.
+
+Google Apps Script 웹앱으로 배포할 Code.gs와 브라우저 화면용 rolling_paper.html을 함께 만들어줘.
+Code.gs에는 명단 불러오기, 메시지 불러오기, 메시지 저장, 초기 시트 생성, 동시 입력 충돌을 줄이기 위한 LockService 처리를 포함해줘.
+rolling_paper.html에는 조별 사람 선택, 작성자 이름, 받는 사람, 메시지 내용, 감사/격려/기도제목 태그, 작성 시간 표시, 조별/개인별 모아보기, 새로고침, 인쇄 화면을 포함해줘.
+
+여러 기기에서 입력한 메시지가 같은 Google Sheet에 저장되고, 새로고침하면 최신 메시지를 다시 불러오게 해줘.
+Apps Script 안에서 실행될 때는 google.script.run 방식으로 Google Sheet와 통신하게 하고, 로컬 미리보기에서는 데모 모드로 동작하게 해줘.
+화면 오른쪽에는 현재 웹앱 URL을 담은 QR 코드를 자동 생성해서 표시해줘. 핸드폰으로 QR을 찍으면 바로 접속할 수 있어야 해.
+
+Computer Use로 Google Sheet를 만들고, 명단 시트와 메시지 시트를 구성하고, Apps Script 편집기에 Code.gs와 rolling_paper.html을 붙여 넣는 단계까지 도와줘.
+웹앱 배포 설정은 실행 권한 나, 접근 권한 모든 사용자로 맞춰줘.
+권한 승인이나 Google의 보안 경고처럼 사용자가 직접 승인해야 하는 단계가 나오면 멈추고, 어떤 버튼을 눌러야 하는지 짧게 안내해줘.
+
+배포가 끝나면 웹앱 URL을 인앱브라우저에서 열어줘.
+Google Sheets 연동 표시, 명단 로딩, QR 코드 표시, 테스트 메시지 저장, 메시지 시트 반영 여부를 확인해줘.
+테스트 메시지는 확인 후 삭제해서 실습 자료를 깨끗하게 돌려줘.
+
+마지막으로 README.md에 Google Sheet 주소, 핸드폰 접속용 웹앱 URL, 배포 방법, 권한 승인 주의점, QR 코드 사용법을 정리해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">Plan mode로 먼저 전체 작업 계획을 세운 뒤 진행해줘. 필요하면 Computer Use와 인앱브라우저를 사용해서 Google Sheets와 Apps Script 배포 화면까지 실제로 열어 확인해줘.
+
+2026_성경학교_롤링페이퍼_명단_샘플.xlsx를 읽고, 여러 핸드폰에서 동시에 입력할 수 있는 Google Sheets 연동 롤링페이퍼 웹앱을 만들어줘.
+엑셀의 학년, 조, 이름, 역할 정보를 기본 명단으로 사용하고, 명단 인원수는 파일에 들어 있는 전체 데이터를 기준으로 계산해줘. 학생, 교사, 교역자 같은 역할별 인원도 자동 요약해줘.
+
+Google Sheets에는 명단 시트와 메시지 시트를 만들어줘.
+명단 시트는 학년, 조, 이름, 역할 컬럼으로 구성하고, 메시지 시트는 ID, 작성시간, 조, 작성자, 받는 사람, 받는 사람 역할, 태그, 메시지 컬럼으로 구성해줘.
+
+Google Apps Script 웹앱으로 배포할 Code.gs와 브라우저 화면용 rolling_paper.html을 함께 만들어줘.
+Code.gs에는 명단 불러오기, 메시지 불러오기, 메시지 저장, 초기 시트 생성, 동시 입력 충돌을 줄이기 위한 LockService 처리를 포함해줘.
+rolling_paper.html에는 조별 사람 선택, 작성자 이름, 받는 사람, 메시지 내용, 감사/격려/기도제목 태그, 작성 시간 표시, 조별/개인별 모아보기, 새로고침, 인쇄 화면을 포함해줘.
+
+여러 기기에서 입력한 메시지가 같은 Google Sheet에 저장되고, 새로고침하면 최신 메시지를 다시 불러오게 해줘.
+Apps Script 안에서 실행될 때는 google.script.run 방식으로 Google Sheet와 통신하게 하고, 로컬 미리보기에서는 데모 모드로 동작하게 해줘.
+화면 오른쪽에는 현재 웹앱 URL을 담은 QR 코드를 자동 생성해서 표시해줘. 핸드폰으로 QR을 찍으면 바로 접속할 수 있어야 해.
+
+Computer Use로 Google Sheet를 만들고, 명단 시트와 메시지 시트를 구성하고, Apps Script 편집기에 Code.gs와 rolling_paper.html을 붙여 넣는 단계까지 도와줘.
+웹앱 배포 설정은 실행 권한 나, 접근 권한 모든 사용자로 맞춰줘.
+권한 승인이나 Google의 보안 경고처럼 사용자가 직접 승인해야 하는 단계가 나오면 멈추고, 어떤 버튼을 눌러야 하는지 짧게 안내해줘.
+
+배포가 끝나면 웹앱 URL을 인앱브라우저에서 열어줘.
+Google Sheets 연동 표시, 명단 로딩, QR 코드 표시, 테스트 메시지 저장, 메시지 시트 반영 여부를 확인해줘.
+테스트 메시지는 확인 후 삭제해서 실습 자료를 깨끗하게 돌려줘.
+
+마지막으로 README.md에 Google Sheet 주소, 핸드폰 접속용 웹앱 URL, 배포 방법, 권한 승인 주의점, QR 코드 사용법을 정리해줘.</pre>
+</div>
+<div class="chapter-body" style="margin-top:18px;margin-bottom:0;">
+        <strong>여러 핸드폰에서 동시에 입력하려면?</strong><br/>
+        처음부터 Google Sheets를 저장소로 두고 Apps Script 웹앱을 배포하는 방식이 가장 설명하기 쉽습니다.
+        참가자는 같은 링크나 QR 코드로 접속해 메시지를 남기고, 모든 입력은 하나의 Google Sheet에 모입니다.
+        코덱스는 <span class="mark">Google Sheet 생성, Apps Script 코드 작성, 배포 안내, QR 코드, 저장 테스트</span>까지 함께 도와줄 수 있습니다.
+      </div>
+<div class="prompts-label" style="margin-top:32px;">📝 Test/chapter7/02_피드백_설문 폴더에서 작업 — 피드백 설문문항 만들기</div>
+<div class="chapter-body" style="margin-bottom:18px;">
+        <strong>Browser Use로 Google Forms 만들기</strong><br/>
+        Browser Use는 코덱스가 브라우저 안에서 실제 웹서비스를 열고, 화면을 읽고, 클릭과 입력을 도와주는 방식입니다.
+        설문문항처럼 먼저 내용을 검토해야 하는 작업은 <span class="mark">1단계에서 문항을 확정</span>하고,
+        <span class="mark">2단계에서 Browser Use로 Google Forms 화면에 옮기는 흐름</span>이 가장 안전합니다.
+        로그인이나 권한 확인처럼 계정 보안이 필요한 순간에는 사용자가 직접 승인하고, 코덱스가 그 다음 입력 작업을 이어갑니다.
+      </div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">1단계</span><span class="prompt-tag">// 설문문항 초안 확인</span></div><button class="copy-btn" data-text="01_설문_제작기준.md를 읽고, 성경학교 피드백 설문문항 초안을 먼저 만들어줘.
+보호자용, 교사용, 어린이용으로 나누고, 각 설문은 5분 안에 응답할 수 있게 구성해줘.
+객관식, 5점 척도, 단답형, 서술형을 섞고, 문항 번호, 문항, 응답 형식, 활용 목적을 표로 정리해줘.
+Google Forms에 바로 옮기기 좋은 문항 목록도 따로 정리해줘.
+아직 Google Forms를 만들지는 말고, 사용자가 문항을 확인하고 수정 요청할 수 있도록 여기서 멈춰줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">01_설문_제작기준.md를 읽고, 성경학교 피드백 설문문항 초안을 먼저 만들어줘.
+보호자용, 교사용, 어린이용으로 나누고, 각 설문은 5분 안에 응답할 수 있게 구성해줘.
+객관식, 5점 척도, 단답형, 서술형을 섞고, 문항 번호, 문항, 응답 형식, 활용 목적을 표로 정리해줘.
+Google Forms에 바로 옮기기 좋은 문항 목록도 따로 정리해줘.
+아직 Google Forms를 만들지는 말고, 사용자가 문항을 확인하고 수정 요청할 수 있도록 여기서 멈춰줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">2단계</span><span class="prompt-tag">// Google Forms 제작</span></div><button class="copy-btn" data-text="사용자가 확정한 성경학교 피드백 설문문항을 바탕으로 Google Forms 설문을 만들어줘.
+Browser Use를 사용해서 Chrome 브라우저를 열고, Google Forms에 접속해 새 설문을 만들어줘.
+
+설문 제목은 2026 성경학교 피드백 설문으로 하고, 설명에는 응답 목적과 예상 소요 시간 5분을 간단히 적어줘.
+보호자용, 교사용, 어린이용 문항이 섞여 있다면 섹션을 나누어 입력해줘.
+객관식, 체크박스, 5점 척도, 단답형, 장문형 등 문항의 의도에 맞는 Google Forms 질문 유형을 선택해줘.
+
+필수 응답이 필요한 핵심 문항은 필수로 켜고, 서술형 소감 문항은 선택 응답으로 둬.
+설문 제작 중 로그인이 필요하거나 권한 확인 화면이 나오면 멈추고, 사용자가 직접 처리해야 할 버튼을 짧게 안내해줘.
+
+설문을 다 만든 뒤에는 미리보기 화면으로 열어 문항 순서, 질문 유형, 필수 여부가 맞는지 확인해줘.
+완성된 Google Forms 편집 링크와 응답자 공유 링크를 정리해서 알려줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">사용자가 확정한 성경학교 피드백 설문문항을 바탕으로 Google Forms 설문을 만들어줘.
+Browser Use를 사용해서 Chrome 브라우저를 열고, Google Forms에 접속해 새 설문을 만들어줘.
+
+설문 제목은 2026 성경학교 피드백 설문으로 하고, 설명에는 응답 목적과 예상 소요 시간 5분을 간단히 적어줘.
+보호자용, 교사용, 어린이용 문항이 섞여 있다면 섹션을 나누어 입력해줘.
+객관식, 체크박스, 5점 척도, 단답형, 장문형 등 문항의 의도에 맞는 Google Forms 질문 유형을 선택해줘.
+
+필수 응답이 필요한 핵심 문항은 필수로 켜고, 서술형 소감 문항은 선택 응답으로 둬.
+설문 제작 중 로그인이 필요하거나 권한 확인 화면이 나오면 멈추고, 사용자가 직접 처리해야 할 버튼을 짧게 안내해줘.
+
+설문을 다 만든 뒤에는 미리보기 화면으로 열어 문항 순서, 질문 유형, 필수 여부가 맞는지 확인해줘.
+완성된 Google Forms 편집 링크와 응답자 공유 링크를 정리해서 알려줘.</pre>
+</div>
+</div>
+</div>
+
+</div>
+<div class="chapter reveal visible">
+<div class="chapter-meta">APPENDIX · 스케줄링 자동화</div>
+<div class="chapter-tags">
+<span class="chapter-tag">정기 실행</span>
+<span class="chapter-tag cloud">뉴스 클리핑</span>
+<span class="chapter-tag sky">Codex Automations</span>
+</div>
+<div class="chapter-head">
+<div class="chapter-num">A</div>
+<div class="chapter-title-wrap">
+<h3 class="chapter-title">매일 아침 <em>자동으로 일하게 하기</em></h3>
+<p class="chapter-tagline">반복해서 해야 하는 정보 수집은 스케줄링 자동화로 넘긴다.</p>
+</div>
+</div>
+<div class="chapter-body">
+        이 실습은 보통 <strong>스케줄링 자동화</strong>, <strong>정기 실행 자동화</strong>, 또는 Codex 안에서는 <strong>Automations</strong>라고 부릅니다.
+        사역 현장에서는 “매일 아침 7시에 Codex가 관련 뉴스를 찾아 정리해 두기”처럼 설명하면 가장 직관적입니다.
+        외부 발송이나 별도 서버를 만들지 않고도, Codex의 <span class="mark">자동화 실행 결과</span>를 Codex 확인함이나 현재 스레드에서 확인할 수 있습니다.
+      </div>
+<div class="chapter-viz">
+<svg viewbox="0 0 720 260" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="arrowAppendix" markerHeight="8" markerWidth="8" orient="auto" refX="7" refY="3.5"><polygon fill="#E8745B" points="0 0, 8 3.5, 0 7"></polygon></marker></defs>
+<rect fill="#FFFDFC" height="260" rx="18" width="720"></rect>
+<g font-family="Pretendard,sans-serif" text-anchor="middle">
+<rect fill="#E9F3F7" height="76" rx="14" stroke="#D8E3EA" width="150" x="45" y="92"></rect>
+<text fill="#1B2A3D" font-size="17" font-weight="700" x="120" y="124">Codex 자동화</text>
+<text fill="#6B7688" font-size="12" x="120" y="146">매일 자동 실행</text>
+<rect fill="#FFF4EF" height="76" rx="14" stroke="#F0D9CF" width="150" x="285" y="92"></rect>
+<text fill="#1B2A3D" font-size="17" font-weight="700" x="360" y="124">뉴스 수집</text>
+<text fill="#6B7688" font-size="12" x="360" y="146">키워드 · RSS · 검색</text>
+<rect fill="#F8FAFC" height="76" rx="14" stroke="#D8E3EA" width="150" x="525" y="92"></rect>
+<text fill="#1B2A3D" font-size="17" font-weight="700" x="600" y="124">Codex에서 확인</text>
+<text fill="#6B7688" font-size="12" x="600" y="146">확인함 · 스레드 · 링크</text>
+<path d="M205 130 H268" fill="none" marker-end="url(#arrowAppendix)" stroke="#E8745B" stroke-dasharray="6 6" stroke-width="2"></path>
+<path d="M445 130 H508" fill="none" marker-end="url(#arrowAppendix)" stroke="#E8745B" stroke-dasharray="6 6" stroke-width="2"></path>
+<text fill="#8B95A3" font-family="Instrument Serif,serif" font-size="15" font-style="italic" x="360" y="212">반복 업무는 사람이 기억하는 일이 아니라 시스템이 실행하는 일이 된다</text>
+</g>
+</svg>
+</div>
+<div class="chapter-prompts">
+<div class="prompts-label">⏰ Codex Automations — 매일 아침 뉴스 클리핑 · 일일 브리핑</div>
+<div class="chapter-body" style="margin-bottom:18px;">
+        <strong>스케줄링 자동화란?</strong><br/>
+        스케줄링 자동화는 특정 시간이나 주기에 맞춰 작업을 자동 실행하는 방식입니다.
+        Codex에서는 <span class="mark">Automations</span>에 아래 프롬프트를 그대로 넣고 매일 오전 7시로 설정하면 됩니다.
+        새로 확인할 내용이 있으면 Codex 확인함이나 현재 스레드에서 결과를 볼 수 있습니다.
+      </div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">자동화 프롬프트</span><span class="prompt-tag">// 매일 오전 7시 뉴스 클리핑</span></div><button class="copy-btn" data-text="매일 오전 7시에 성경학교와 교회학교 사역자가 확인하면 좋을 최신 뉴스를 클리핑해줘.
+
+관심 키워드는 여름성경학교, 교회학교, 아동부, 다음세대, 어린이 사역, 기독교 교육, 안전사고 예방, 교육 트렌드, AI 활용 교육으로 해줘.
+광고성 글, 단순 행사 홍보, 중복 기사, 출처가 불분명한 글은 제외해줘.
+
+결과는 Codex에서 바로 확인할 수 있게 정리해줘.
+중요한 새 소식이 있으면 오늘의 핵심 뉴스 3~5개를 제목, 출처, 날짜, 한 줄 요약, 사역 적용 아이디어, 확인 링크로 정리해줘.
+특별히 볼 만한 내용이 없으면 '오늘은 특별히 보고할 만한 새 소식이 없습니다'라고 짧게 알려줘.
+
+외부 발송은 하지 말고, Codex 확인함 또는 현재 스레드에서 확인할 수 있게 해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">매일 오전 7시에 성경학교와 교회학교 사역자가 확인하면 좋을 최신 뉴스를 클리핑해줘.
+
+관심 키워드는 여름성경학교, 교회학교, 아동부, 다음세대, 어린이 사역, 기독교 교육, 안전사고 예방, 교육 트렌드, AI 활용 교육으로 해줘.
+광고성 글, 단순 행사 홍보, 중복 기사, 출처가 불분명한 글은 제외해줘.
+
+결과는 Codex에서 바로 확인할 수 있게 정리해줘.
+중요한 새 소식이 있으면 오늘의 핵심 뉴스 3~5개를 제목, 출처, 날짜, 한 줄 요약, 사역 적용 아이디어, 확인 링크로 정리해줘.
+특별히 볼 만한 내용이 없으면 '오늘은 특별히 보고할 만한 새 소식이 없습니다'라고 짧게 알려줘.
+
+외부 발송은 하지 말고, Codex 확인함 또는 현재 스레드에서 확인할 수 있게 해줘.</pre>
+</div>
+<div class="prompt-card">
+<div class="prompt-head"><div class="prompt-label"><span class="prompt-num">자동화 프롬프트</span><span class="prompt-tag">// 매일 오전 7시 일일 브리핑</span></div><button class="copy-btn" data-text="매일 오전 7시에 오늘 하루를 준비할 수 있는 일일 브리핑을 만들어줘.
+
+브리핑에는 오늘 날짜와 요일, 오늘의 주요 일정, 준비해야 할 일, 마감이 가까운 일, 확인해야 할 연락, 오늘 우선순위 3가지를 포함해줘.
+결과는 Codex에서 바로 확인하기 좋게 짧고 선명하게 정리해줘.
+형식은 1. 오늘의 한 줄 요약, 2. 주요 일정, 3. 우선순위 3가지, 4. 확인할 것, 5. 미뤄도 되는 일 순서로 해줘.
+
+특별히 확인할 내용이 없으면 '오늘은 특별히 긴급한 브리핑 항목이 없습니다'라고 알려줘.
+외부 발송은 하지 말고, Codex 확인함 또는 현재 스레드에서 확인할 수 있게 해줘."><svg fill="none" stroke="currentColor" viewbox="0 0 24 24"><rect height="13" rx="2" width="13" x="9" y="9"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div>
+<pre class="prompt-body">매일 오전 7시에 오늘 하루를 준비할 수 있는 일일 브리핑을 만들어줘.
+
+브리핑에는 오늘 날짜와 요일, 오늘의 주요 일정, 준비해야 할 일, 마감이 가까운 일, 확인해야 할 연락, 오늘 우선순위 3가지를 포함해줘.
+결과는 Codex에서 바로 확인하기 좋게 짧고 선명하게 정리해줘.
+형식은 1. 오늘의 한 줄 요약, 2. 주요 일정, 3. 우선순위 3가지, 4. 확인할 것, 5. 미뤄도 되는 일 순서로 해줘.
+
+특별히 확인할 내용이 없으면 '오늘은 특별히 긴급한 브리핑 항목이 없습니다'라고 알려줘.
+외부 발송은 하지 말고, Codex 확인함 또는 현재 스레드에서 확인할 수 있게 해줘.</pre>
+</div>
+</div>
+</div>
+
+
+</section>
+<script>
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    if (!btn.hasAttribute('data-text')) return;
+    const text = btn.getAttribute('data-text');
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    const original = btn.innerHTML;
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg> COPIED';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = original;
+    }, 1600);
+  });
+});
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -80px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body></html>
