@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>온길교회 | 12주차 실습 예제</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fbf5ed;color:#1b2a3e;font:1rem/1.65 system-ui,sans-serif}main{max-width:46rem;margin:auto;padding:2rem 1.25rem}header{padding:1.5rem 0}h1,h2{line-height:1.25}section{background:white;border:1px solid #dfd3c3;border-radius:.8rem;margin:1rem 0;padding:1.25rem}a{color:#913926}form{display:grid;gap:.6rem}input,button{min-height:44px;font:inherit;padding:.5rem .7rem}button{background:#1b2a3e;color:white;border:0;border-radius:.35rem;cursor:pointer}:focus-visible{outline:3px solid #913926;outline-offset:4px}#answer{min-height:3rem}footer{margin-top:2rem}
+</style>
+</head>
+<body><main>
+<header>
+<p>신대원 12주차 실습 · 가상의 교회</p>
+<h1>온길교회에 오신 것을 환영합니다</h1>
+<p>함께 예배하고, 서로의 삶에 귀 기울입니다.</p>
+<nav aria-label="홈페이지 안내"><a href="#visit">교회 안내</a> · <a href="#guide">질문하기</a></nav>
+</header>
+<section id="visit">
+<h2>교회 안내</h2>
+<p>주일예배는 오전 11시 본관 2층 예배실에서 드립니다.</p>
+<p>처음 오시면 예배 15분 전 본관 1층 안내 데스크에 들러 주세요.</p>
+<p>주차와 어린이 동반 안내는 아래 질문 창에서 확인할 수 있습니다.</p>
+</section>
+<section id="guide">
+<h2>교회 안내 데모</h2>
+<p id="help">예배 시간, 위치, 주차, 어린이 안내를 물어보세요. 수업용 예제이며 입력은 저장하거나 전송하지 않습니다.</p>
+<form id="guide-form">
+<label for="question">질문</label>
+<input id="question" aria-describedby="help" maxlength="200" required autocomplete="off">
+<button type="submit">안내 확인</button>
+</form>
+<p id="answer" role="status"></p>
+</section>
+<footer>이 페이지의 교회와 정보는 수업을 위한 가상 예제입니다.</footer>
+</main>
+<script>
+const form = document.querySelector('#guide-form');
+const input = document.querySelector('#question');
+const answer = document.querySelector('#answer');
+form.addEventListener('submit', event => {
+  event.preventDefault();
+  const question = input.value.trim();
+  if (!question) { answer.textContent = '질문을 입력해 주세요.'; return; }
+  const topics = [
+    [/상담|심방|전화번호|연락처|기도 요청/, '개인적인 요청은 예배 전 본관 1층 안내 데스크에서 담당자에게 말씀해 주세요.'],
+    [/주차/, '본관 뒤편에 방문자 주차 구역이 있습니다. 만차일 때는 입구의 안내를 따라 주세요.'],
+    [/어린이|아동|자녀|아이/, '어린이를 동반하시면 본관 1층 안내 데스크에서 교육관을 안내해 드립니다.'],
+    [/위치|입구|찾아|어디|새가족|처음/, '처음 오시면 본관 정문으로 들어와 1층 안내 데스크에 들러 주세요.'],
+    [/주일|예배/, '주일 오전 11시, 본관 2층 예배실에서 예배드립니다.']
+  ];
+  answer.textContent = topics.find(([pattern]) => pattern.test(question))?.[1]
+    ?? '현재 안내 자료에서 확인할 수 없습니다. 본관 1층 안내 데스크에서 확인해 주세요.';
+});
+</script>
+</body>
+</html>
